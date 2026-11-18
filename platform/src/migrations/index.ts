@@ -4,6 +4,7 @@ import * as migration_20261117_235635_officials_directory from './20261117_23563
 import * as migration_20261117_235915_record_documents from './20261117_235915_record_documents';
 import * as migration_20261118_122432_haitian_creole_locale from './20261118_122432_haitian_creole_locale';
 import * as migration_20261118_124822_legislation_fiscal from './20261118_124822_legislation_fiscal';
+import * as migration_20261118_191817_media_object_key from './20261118_191817_media_object_key';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20261118_124822_legislation_fiscal.up,
     down: migration_20261118_124822_legislation_fiscal.down,
-    name: '20261118_124822_legislation_fiscal'
+    name: '20261118_124822_legislation_fiscal',
+  },
+  {
+    up: migration_20261118_191817_media_object_key.up,
+    down: migration_20261118_191817_media_object_key.down,
+    name: '20261118_191817_media_object_key'
   },
 ];
