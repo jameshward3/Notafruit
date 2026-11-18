@@ -401,3 +401,13 @@ dl.facts dt { font-weight: 700; } dl.facts dd { margin: 0; }
 .og-items td { vertical-align: top; }
 .sponsored-list { list-style: none; padding: 0; display: grid; gap: 8px; }
 .sponsored-list li { border-left: 3px solid var(--gold); padding-left: 10px; }
+
+/* Review gate (hosted prototype password page) */
+.gate { min-height: calc(100vh - 48px); display: grid; place-items: center; padding: var(--s6) var(--gutter); background: var(--navy); }
+.gate__card { width: min(420px, 100%); background: var(--white); padding: var(--s6); border-top: 4px solid var(--gold); box-shadow: 0 12px 40px rgba(0,0,0,.35); }
+.gate__seal { display: block; width: 72px; height: 72px; margin-bottom: var(--s4); }
+.gate__card h1 { font-size: var(--fs-h2); margin: 0 0 var(--s3); }
+.gate__form { display: grid; gap: var(--s3); margin-top: var(--s4); }
+.gate__form label { font-weight: 700; }
+.gate__form input { min-height: var(--control-h); padding: 0 var(--s3); border: 1px solid var(--control-border); font: inherit; font-size: 1.125rem; }
+.gate__form .btn { width: 100%; }
