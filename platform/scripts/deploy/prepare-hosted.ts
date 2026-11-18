@@ -9,6 +9,12 @@
  */
 import { config as loadEnv } from 'dotenv'
 loadEnv({ path: '.env.production.local', override: true })
+// The DB password lives on its own line; insert it (URL-encoded) into the connection strings.
+for (const k of ['DATABASE_URL', 'SUPABASE_SESSION_URL']) {
+  if (process.env[k]?.includes('[YOUR-PASSWORD]') && process.env.SUPABASE_DB_PASSWORD) {
+    process.env[k] = process.env[k]!.replace('[YOUR-PASSWORD]', encodeURIComponent(process.env.SUPABASE_DB_PASSWORD))
+  }
+}
 
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
@@ -33,7 +39,9 @@ else await payload.create({ collection: 'users', data: data as any, overrideAcce
 console.log('administrator account ready')
 
 // Media: same keys the S3 adapter uses (file name at bucket root).
+// Supabase Storage does not accept the SDK's default request checksums (they break the signature).
 const s3 = new S3Client({ endpoint: process.env.S3_ENDPOINT, region: process.env.S3_REGION ?? 'us-east-1', forcePathStyle: true,
+  requestChecksumCalculation: 'WHEN_REQUIRED', responseChecksumValidation: 'WHEN_REQUIRED',
   credentials: { accessKeyId: process.env.S3_ACCESS_KEY_ID!, secretAccessKey: process.env.S3_SECRET_ACCESS_KEY! } })
 const TYPES: Record<string, string> = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', avif: 'image/avif' }
 let n = 0

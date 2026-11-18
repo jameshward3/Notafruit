@@ -87,6 +87,9 @@ export default buildConfig({
             endpoint: process.env.S3_ENDPOINT,
             region: process.env.S3_REGION ?? 'us-east-1',
             forcePathStyle: true,
+            // S3-compatible stores such as Supabase Storage reject the SDK's default request checksums.
+            requestChecksumCalculation: 'WHEN_REQUIRED',
+            responseChecksumValidation: 'WHEN_REQUIRED',
             credentials: { accessKeyId: process.env.S3_ACCESS_KEY_ID ?? '', secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? '' },
           },
         }),
