@@ -1,0 +1,26 @@
+# Environment / secrets
+.env
+deploy/certs/
+
+# Python
+__pycache__/
+*.pyc
+backend/clerkos-dev.sqlite3
+backend/staticfiles/
+backend/data/
+backend/.venv/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Backups & OS noise
+backups-offsite/
+*.dump
+.DS_Store
+
+# Local tooling & migration working files
+.claude/
+platform/private-uploads-*.log
+node_modules/
+.vercel/

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "web": {
+      "root": "platform",
+      "framework": "nextjs"
+    },
+    "clerkos-web": {
+      "root": "frontend",
+      "framework": "vite",
+      "outputDirectory": "dist",
+      "rewrites": [
+        { "source": "/clerkos/(.*)", "destination": "/clerkos/index.html" }
+      ]
+    },
+    "clerkos-api": {
+      "root": "backend",
+      "framework": "django",
+      "buildCommand": "python manage.py migrate --noinput && python manage.py seed --demo-data"
+    }
+  },
+  "rewrites": [
+    { "source": "/clerkos/api/(.*)", "destination": { "service": "clerkos-api" } },
+    { "source": "/clerkos/(.*)", "destination": { "service": "clerkos-web" } },
+    { "source": "/clerkos", "destination": { "service": "clerkos-web" } },
+    { "source": "/(.*)", "destination": { "service": "web" } }
+  ]
+}

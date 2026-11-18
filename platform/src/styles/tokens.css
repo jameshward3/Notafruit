@@ -1,0 +1,51 @@
+/* Orange Township design tokens — single source for color, type, space.
+   Documented in docs/design-system.md. Orange is NOT a brand color. */
+:root {
+  /* Brand */
+  --navy: #0B2035; --navy-hover: #163A5B;
+  --gold: #B79B59; --gold-light: #EDE3CA; --gold-text: #70551F;
+  /* Surfaces & text */
+  --white: #FFFFFF; --surface-cool: #F4F6F8; --surface-warm: #F7F5F0;
+  --text: #17283A; --text-muted: #526171;
+  --divider: #CDD4DC; --control-border: #718096;
+  --link: #174F7A; --focus: #005FCC;
+  /* Status (always paired with a label or icon) */
+  --success: #24664E; --success-bg: #E7F1EB;
+  --warning: #785A16; --warning-bg: #FFF3D6;
+  --error: #A62D37; --error-bg: #FBEAEC;
+  --info: #205B85; --info-bg: #E8F1F8;
+  /* Wards (always paired with a label/pattern) */
+  --ward-north: #5688B0; --ward-north-fill: #DCE8F2;
+  --ward-south: #C49A43; --ward-south-fill: #F3E7CA;
+  --ward-east: #438F88; --ward-east-fill: #D9ECE8;
+  --ward-west: #956582; --ward-west-fill: #EADDE6;
+  /* Budget categories (stable across years) */
+  --cat-public-safety: #0B2035; --cat-public-works: #54718A; --cat-parks: #9A752F;
+  --cat-general-gov: #737F8C; --cat-other: #B8C1CB;
+
+  /* Type: hero 56/36, H1 44/32, H2 32/26, H3 22/21, body 18, UI 16, meta 14 */
+  --font: 'Inter Variable', Inter, Arial, sans-serif;
+  --fs-hero: clamp(2.25rem, 1.5rem + 3.2vw, 3.5rem);
+  --fs-h1: clamp(2rem, 1.55rem + 1.9vw, 2.75rem);
+  --fs-h2: clamp(1.625rem, 1.45rem + 0.75vw, 2rem);
+  --fs-h3: clamp(1.3125rem, 1.29rem + 0.1vw, 1.375rem);
+  --fs-body: 1.125rem; --fs-ui: 1rem; --fs-meta: 0.875rem;
+
+  /* Space scale 4/8/12/16/24/32/48/64/96 */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px; --s9: 96px;
+  --max: 1440px; --gutter: 16px; --radius: 2px; --radius-badge: 999px;
+  --control-h: 48px; --touch: 44px;
+}
+/* Guide §11 token names (canonical in the style guide) mapped onto the values above. */
+:root {
+  --brand-navy: var(--navy); --brand-gold: var(--gold); --gold-ink: var(--gold-text);
+  --surface: var(--surface-cool); --border: var(--divider); --border-control: var(--control-border);
+  --danger: var(--error); --danger-bg: var(--error-bg);
+  --ward-north-light: var(--ward-north-fill); --ward-south-light: var(--ward-south-fill);
+  --ward-east-light: var(--ward-east-fill); --ward-west-light: var(--ward-west-fill);
+  --font-ui: var(--font); --content-max: 90rem; --radius-control: 0.25rem;
+  /* Project status (guide §6) — never ward colors */
+  --status-planning: #0B2035; --status-scheduled: #70551F; --status-active: #0E6B66; --status-complete: #0B2035;
+}
+@media (min-width: 640px) { :root { --gutter: 32px; } }
+@media (min-width: 1024px) { :root { --gutter: 48px; } }

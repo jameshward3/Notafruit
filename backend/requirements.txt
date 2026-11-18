@@ -1,0 +1,10 @@
+# ClerkOS backend dependencies — pinned for reproducible on-prem installs.
+Django==4.2.30
+djangorestframework==3.15.2
+django-filter==24.3
+psycopg2-binary==2.9.10
+gunicorn==23.0.0
+celery==5.4.0
+redis==5.2.1
+python-dotenv==1.0.1
+Pillow==11.1.0

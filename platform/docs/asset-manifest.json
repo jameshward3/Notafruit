@@ -1,0 +1,24 @@
+[
+  {
+    "id": "brand-city-seal",
+    "filename": "public/assets/brand/city-seal.png",
+    "kind": "seal",
+    "sourceUrl": "https://orangenj.gov/ImageRepository/Document?documentId=80",
+    "sourceContext": "Published on the official City website (orangenj.gov) with alt text \"Seal of the Orange City Township\"",
+    "owner": "City of Orange Township",
+    "licensePermission": "Use in the platform prototype authorized 2026-11-17 by the project owner, a member of the City Council body authorized to commission the prototype. Production use requires confirmation of the master artwork by the City Clerk.",
+    "geographicLocation": null,
+    "captureDate": null,
+    "retrievedAt": "2026-11-17",
+    "format": "PNG, 385x385, palette with transparency (black seal on transparent)",
+    "altText": "",
+    "altTextNote": "Decorative in the masthead: the adjacent text names the City (style guide section 2).",
+    "focalPoint": { "x": 50, "y": 50 },
+    "approvedBy": "Project owner (City Council member)",
+    "approvedAt": "2026-11-17",
+    "checksumSha256": "bb07b430a6c759df7b33bf056e9afbbc05a267ef6c4da5dcddcff4bbe5d1d02b",
+    "modifications": "None. Bytes identical to the official download.",
+    "verificationStatus": "source_verified_master_pending",
+    "verificationNote": "Authentic official-website rendition, not traced or redrawn. A vector master (SVG) from the City Clerk is still requested for print and large displays."
+  }
+]

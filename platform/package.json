@@ -1,0 +1,78 @@
+{
+  "name": "orange-platform",
+  "version": "0.1.0",
+  "description": "City of Orange Township unified public platform (public site + editorial CMS). Prototype — not the official City website.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/vendor-maplibre.mjs",
+    "prebuild": "node scripts/vendor-maplibre.mjs",
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "worker": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/worker.ts",
+    "db:migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && tsx scripts/sql-migrate.ts",
+    "db:migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
+    "seed:demo": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/seed.ts",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
+    "typecheck": "tsc --noEmit",
+    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
+    "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts --trace off",
+    "test": "pnpm run test:int && pnpm run test:e2e"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "5.3.0",
+    "@payloadcms/db-postgres": "3.92.1",
+    "@payloadcms/email-nodemailer": "3.92.1",
+    "@payloadcms/next": "3.92.1",
+    "@payloadcms/richtext-lexical": "3.92.1",
+    "@payloadcms/storage-s3": "3.92.1",
+    "@payloadcms/ui": "3.92.1",
+    "cross-env": "7.0.3",
+    "csv-parse": "7.0.3",
+    "dotenv": "16.4.7",
+    "graphql": "16.11.0",
+    "lucide-react": "1.66.0",
+    "maplibre-gl": "6.16.0",
+    "next": "16.4.5",
+    "nodemailer": "10.3.1",
+    "payload": "3.92.1",
+    "pg": "8.20.0",
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "recharts": "3.10.1",
+    "sharp": "0.35.4",
+    "unpdf": "2.1.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "22.19.9",
+    "@types/nodemailer": "8.0.2",
+    "@types/pg": "8.20.0",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.1",
+    "eslint-config-next": "16.4.5",
+    "prettier": "3.6.2",
+    "tsx": "4.23.15",
+    "typescript": "5.7.3",
+    "vite-tsconfig-paths": "6.0.5",
+    "vitest": "4.0.18"
+  },
+  "engines": {
+    "node": "^22.23.5 || ^24.22.3 || >=26.13.1",
+    "pnpm": "^10"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild",
+      "unrs-resolver"
+    ]
+  }
+}
