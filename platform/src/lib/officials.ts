@@ -13,7 +13,8 @@ export function photoUrl(o: any): string | null {
   const m = o?.photo
   if (!m || typeof m !== 'object' || m.approvalStatus !== 'approved') return null
   // Portraits keep their original proportions (card derivatives are 4:3 landscape crops).
-  return m.url ?? null
+  // Payload prefixes serverURL; keep media paths relative so portraits load on every domain alias.
+  return m.url ? String(m.url).replace(/^https?:\/\/[^/]+(?=\/api\/media\/)/, '') : null
 }
 
 export async function allOfficials() {

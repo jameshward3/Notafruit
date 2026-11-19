@@ -23,7 +23,7 @@ export default async function Official({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const o = await findOnePublic('officials', { slug: { equals: slug } }, { depth: 1 })
   if (!o) notFound()
-  const img = o.photo?.approvalStatus === 'approved' ? o.photo.url : photoUrl(o)
+  const img = photoUrl(o)
   const sources = (o.sources ?? []).filter((s: any) => typeof s === 'object')
   const sponsored = o.category === 'council' ? await sponsoredBy(await getClient(), o.name, 25) : []
   const og = (extra = '') => `/government/open?year=all&sponsor=${o.slug}${extra}`
