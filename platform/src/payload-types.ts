@@ -1326,6 +1326,10 @@ export interface BudgetLine {
     | 'state_aid'
     | 'other_revenues';
   account?: string | null;
+  /**
+   * Budget section as printed, e.g. "Operations within CAPS", "Section G: Other special items (incl. PILOTs)".
+   */
+  section?: string | null;
   description: string;
   /**
    * Empty = not available (never treated as zero).
@@ -2469,6 +2473,7 @@ export interface BudgetLinesSelect<T extends boolean = true> {
   department?: T;
   category?: T;
   account?: T;
+  section?: T;
   description?: T;
   amountCents?: T;
   importBatch?: T;

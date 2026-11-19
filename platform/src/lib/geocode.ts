@@ -1,9 +1,9 @@
 /**
  * Geocoder adapter. Providers:
- *  - "census": US Census Bureau geocoder (public, no key). Requires outbound
+ *  - "census" (default): US Census Bureau geocoder (public, no key). Requires outbound
  *    access to geocoding.geo.census.gov in the deployment network policy.
  *  - "fixture": development-only fixed addresses, always labeled illustrative.
- *  - "none" (default): geocoding unavailable; UI falls back to directory.
+ *  - "none": geocoding disabled; only the local 07050 address table (lib/address.ts) is used.
  * Raw addresses are never logged.
  */
 export type GeocodeResult =
@@ -18,7 +18,8 @@ const FIXTURES: Record<string, { lng: number; lat: number; matched: string }> = 
 }
 
 export async function geocode(address: string): Promise<GeocodeResult> {
-  const provider = process.env.GEOCODER_PROVIDER ?? 'none'
+  // Default to the public Census geocoder (fallback after the local 07050 address table); set "none" to disable.
+  const provider = process.env.GEOCODER_PROVIDER || 'census'
   const input = address.trim().slice(0, 200)
   if (input.length < 5) return { status: 'no_match' }
 

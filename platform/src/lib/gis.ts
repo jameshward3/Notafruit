@@ -14,6 +14,7 @@ export type WardLookup =
   | { status: 'ok'; ward: string; authoritative: true; versionId: number; custodian: string }
   | { status: 'ambiguous'; candidates: string[]; message: string; versionId: number }
   | { status: 'illustrative'; ward: string | null; authoritative: false; message: string }
+  | { status: 'unofficial'; ward: string; authoritative: false; versionId: number; custodian: string }
 
 async function effectiveVersion(payload: Payload, kind: 'ward' | 'municipal', verifiedOnly: boolean, onDate: string) {
   const rows = await q(
@@ -32,14 +33,20 @@ export async function lookupWard(
   payload: Payload,
   lng: number,
   lat: number,
-  opts: { onDate?: string; allowIllustrative?: boolean } = {},
+  opts: { onDate?: string; allowIllustrative?: boolean; allowUnverified?: boolean } = {},
 ): Promise<WardLookup> {
   if (!Number.isFinite(lng) || !Number.isFinite(lat) || Math.abs(lat) > 90 || Math.abs(lng) > 180) {
     return { status: 'unavailable', reason: 'Invalid coordinates.' }
   }
   const onDate = opts.onDate ?? new Date().toISOString().slice(0, 10)
-  const wardV = await effectiveVersion(payload, 'ward', true, onDate)
+  let wardV = await effectiveVersion(payload, 'ward', true, onDate)
   const cityV = await effectiveVersion(payload, 'municipal', true, onDate)
+  // Unverified public geometry (e.g. the State GIS ward map) may answer, but only as an unofficial result. Demo geometry never does.
+  let unofficial = false
+  if (!wardV && cityV && opts.allowUnverified) {
+    const v = await effectiveVersion(payload, 'ward', false, onDate)
+    if (v && v.verification === 'unverified') { wardV = v; unofficial = true }
+  }
 
   if (!wardV || !cityV) {
     if (opts.allowIllustrative) {
@@ -71,6 +78,7 @@ export async function lookupWard(
     [wardV.id, lng, lat, BOUNDARY_TOLERANCE_M])
   const covering = candidates.filter((c) => c.covers)
   if (candidates.length === 1 && covering.length === 1) {
+    if (unofficial) return { status: 'unofficial', ward: covering[0].ward_slug, authoritative: false, versionId: wardV.id, custodian: wardV.custodian }
     return { status: 'ok', ward: covering[0].ward_slug, authoritative: true, versionId: wardV.id, custodian: wardV.custodian }
   }
   if (candidates.length === 0) {

@@ -29,6 +29,8 @@ export default async function Budget({ searchParams }: { searchParams: SP }) {
         <p className="eyebrow">Budget &amp; transparency</p>
         <ul>
           <li><Link href="/transparency/budget" aria-current="page">Overview <ArrowRight size={18} aria-hidden="true" /></Link></li>
+          <li><Link href="/transparency/budget/dashboard">2026 budget dashboard</Link></li>
+          <li><Link href="/transparency/budget/dashboard?tab=lines">Every line item</Link></li>
           <li><Link href="#revenues">Revenues</Link></li>
           <li><Link href="#expenditures">Expenditures</Link></li>
           <li><Link href="#capital">Capital by location</Link></li>
@@ -43,6 +45,7 @@ export default async function Budget({ searchParams }: { searchParams: SP }) {
           <DemoFlag show={v.anyDemo} text="ILLUSTRATIVE DATA" />
         </div>
         <p className="lede">Explore how the City plans, invests, and delivers.</p>
+        <p><Link className="btn btn--gold" href="/transparency/budget/dashboard">Open the 2026 budget dashboard</Link> <Link className="btn btn--secondary" href="/transparency/budget/dashboard?tab=lines">See every line item</Link></p>
 
         <form className="filters" method="get" aria-label="Budget filters">
           <div className="field"><label htmlFor="year">Fiscal year</label><select id="year" name="year" defaultValue={f.year ?? ''}><option value="">Latest</option>{v.years.map((y) => <option key={y} value={y}>FY {y}</option>)}</select></div>

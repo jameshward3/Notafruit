@@ -449,3 +449,24 @@ dl.facts dt { font-weight: 700; } dl.facts dd { margin: 0; }
 .letters { display: flex; flex-wrap: wrap; gap: 4px; margin: var(--s4) 0; }
 .letters a { min-width: 40px; min-height: 40px; display: inline-grid; place-items: center; padding: 0 8px; border: 1px solid var(--control-border); font-weight: 700; text-decoration: none; }
 .letters--wide a { min-width: 0; }
+
+/* Budget dashboard */
+.tabs--scroll { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; }
+.tabs--scroll a { white-space: nowrap; }
+.hbars { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s3); }
+.hbars__head { display: flex; justify-content: space-between; gap: var(--s3); font-size: var(--fs-ui); }
+.hbars__track { height: 10px; background: var(--white); border: 1px solid var(--divider); margin-top: 4px; }
+.hbars__fill { height: 100%; background: var(--navy); }
+.delta { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.delta--up { color: #8A3B12; }
+.delta--down { color: #1E5A38; }
+.linelist { padding-left: 1.4em; display: grid; gap: var(--s2); }
+.dept-list { display: grid; gap: 8px; }
+.dept { border: 1px solid var(--divider); background: var(--white); }
+.dept summary { display: grid; grid-template-columns: 1fr auto; gap: 4px var(--s4); align-items: center; padding: var(--s3) var(--s4); cursor: pointer; min-height: var(--control-h); }
+.dept summary:hover { background: var(--surface-cool); }
+.dept__name { font-weight: 700; color: var(--navy); }
+.dept__fig { font-weight: 700; text-align: right; }
+.dept__delta { grid-column: 1 / -1; font-size: var(--fs-meta); }
+.dept[open] summary { border-bottom: 1px solid var(--divider); }
+.dept .table-wrap { margin: 0; }

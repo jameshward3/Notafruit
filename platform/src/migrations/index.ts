@@ -6,6 +6,7 @@ import * as migration_20261118_122432_haitian_creole_locale from './20261118_122
 import * as migration_20261118_124822_legislation_fiscal from './20261118_124822_legislation_fiscal';
 import * as migration_20261118_191817_media_object_key from './20261118_191817_media_object_key';
 import * as migration_20261118_193345_city_pages_bids_directory from './20261118_193345_city_pages_bids_directory';
+import * as migration_20261119_081047_budget_line_section from './20261119_081047_budget_line_section';
 
 export const migrations = [
   {
@@ -46,6 +47,11 @@ export const migrations = [
   {
     up: migration_20261118_193345_city_pages_bids_directory.up,
     down: migration_20261118_193345_city_pages_bids_directory.down,
-    name: '20261118_193345_city_pages_bids_directory'
+    name: '20261118_193345_city_pages_bids_directory',
+  },
+  {
+    up: migration_20261119_081047_budget_line_section.up,
+    down: migration_20261119_081047_budget_line_section.down,
+    name: '20261119_081047_budget_line_section'
   },
 ];

@@ -108,6 +108,7 @@ export const BudgetLines: CollectionConfig = {
     { name: 'department', type: 'text' },
     { name: 'category', type: 'select', required: true, options: [...BUDGET_CATEGORIES, 'property_taxes', 'local_revenues', 'state_aid', 'other_revenues'].map((v) => ({ label: v.replace('_', ' '), value: v })) },
     { name: 'account', type: 'text' },
+    { name: 'section', type: 'text', admin: { description: 'Budget section as printed, e.g. "Operations within CAPS", "Section G: Other special items (incl. PILOTs)".' } },
     { name: 'description', type: 'text', required: true },
     {
       name: 'amountCents', type: 'number',
