@@ -39,6 +39,8 @@ const nextConfig: NextConfig = {
       { source: '/admin/:path*', headers: [{ key: 'Cache-Control', value: 'private, no-store' }] },
       { source: '/preview/:path*', headers: [{ key: 'Cache-Control', value: 'private, no-store' }, { key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
       { source: '/api/:path*', headers: [{ key: 'Cache-Control', value: 'private, no-store' }] },
+      // Proxied City documents may be framed by this site's own viewer only (later entries override the defaults above).
+      { source: '/documents/orangenj/file/:id', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }, { key: 'Content-Security-Policy', value: "frame-ancestors 'self'" }] },
     ]
   },
   images: {

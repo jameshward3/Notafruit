@@ -146,10 +146,21 @@ async function minutes(fromYear: number, toYear: number) {
   console.log(`minutes: done, ${ok}/${links.size} downloaded`)
 }
 
+/** orangenj.gov module pages not in the sitemap: bid details, the full business directory, staff photos. */
+async function orangenjExtras() {
+  const cached = (u: string) => readFileSync(join(CRAWL_DIR, readManifest('orangenj.gov').get(u)!.file!), 'utf8')
+  const urls = new Set<string>(['https://orangenj.gov/BusinessDirectoryii.aspx?ysnShowAll=1'])
+  for (const m of cached('https://orangenj.gov/Bids.aspx').matchAll(/href="bids\.aspx\?bidID=(\d+)"/gi)) urls.add(`https://orangenj.gov/bids.aspx?bidID=${m[1]}`)
+  for (const m of cached('https://orangenj.gov/Directory.aspx').matchAll(/src="(\/ImageRepository\/Document\?documentID=\d+)"/g)) urls.add(`https://orangenj.gov${m[1]}`)
+  let n = 0
+  for (const url of urls) { const { row } = await get(url); n++; console.log(`extras: ${n}/${urls.size} ${row.status} ${url}`) }
+}
+
 if (process.argv[1]?.replace(/\\/g, '/').endsWith('crawl/fetch.ts')) {
   const [cmd, arg, arg2] = process.argv.slice(2)
   if (cmd === 'council') await council()
   else if (cmd === 'orangenj') await orangenj()
+  else if (cmd === 'orangenj-extras') await orangenjExtras()
   else if (cmd === 'pdfs') await pdfs(Number(arg ?? 2024))
   else if (cmd === 'minutes') await minutes(Number(arg ?? 2008), Number(arg2 ?? 2023))
   else { console.error('usage: fetch.ts council | orangenj | pdfs <fromYear> | minutes <fromYear> <toYear>'); process.exit(1) }

@@ -6,7 +6,9 @@ export default function Government() {
     ['/government/meetings', 'Meetings & agendas', 'Upcoming and past meetings with web-native agendas, minutes and votes.'],
     ['/government/legislation', 'Legislation', 'Ordinances and resolutions with every recorded action and vote.'],
     ['/government/officials', 'Officials & contacts', 'Mayor, City Council, City Clerk and department leaders, with photos and contact details.'],
-    ['/departments', 'Departments', 'Contact information and services by department.'],
+    ['/departments', 'Departments', 'Contact information, pages, forms and staff by department.'],
+    ['/government/directory', 'Staff directory', 'Phone and email for every City office and staff member.'],
+    ['/info', 'City information', 'Every page from orangenj.gov, with its forms, contacts and links.'],
     ['/notices', 'Public notices', 'Legal and general notices.'],
     ['/calendar', 'Calendar', 'Meetings and public events.'],
   ]

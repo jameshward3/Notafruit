@@ -11,6 +11,7 @@ export const NAV = [
   { href: '/explore', key: 'explore' },
   { href: '/government', key: 'government' },
   { href: '/government/meetings', key: 'meetings' },
+  { href: '/business', key: 'business' },
   { href: '/transparency', key: 'transparency' },
   { href: '/projects', key: 'projects' },
 ] as const

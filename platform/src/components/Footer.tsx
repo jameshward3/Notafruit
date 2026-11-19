@@ -18,12 +18,15 @@ export function Footer({ s }: { s: Strings }) {
             <li><Link href="/transparency/budget">{s.budget}</Link></li>
             <li><Link href="/government/officials">{s.officialsContacts}</Link></li>
             <li><Link href="/departments">{s.departments}</Link></li>
+            <li><Link href="/government/directory">{s.staffDirectory}</Link></li>
           </ul>
         </div>
         <div>
           <h2>{s.footerHelp}</h2>
           <ul>
             <li><Link href="/services">{s.services}</Link></li>
+            <li><Link href="/business">{s.business}</Link></li>
+            <li><Link href="/info">{s.cityPages}</Link></li>
             <li><Link href="/report-a-concern">{s.reportConcern}</Link></li>
             <li><Link href="/subscribe">{s.getUpdates}</Link></li>
             <li><Link href="/accessibility">{s.accessibility}</Link></li>

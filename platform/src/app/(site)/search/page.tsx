@@ -8,7 +8,7 @@ import { fmtShortDate } from '@/lib/time'
 import { getLocale, t, wardName } from '@/lib/i18n'
 export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Search' }
-const TYPES = ['legislation', 'meeting', 'notice', 'service', 'project', 'place', 'dataset', 'event'] as const
+const TYPES = ['legislation', 'meeting', 'notice', 'service', 'page', 'bid', 'project', 'place', 'dataset', 'event'] as const
 /** Allow only <mark> from ts_headline; escape everything else. */
 const safeSnippet = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&lt;mark&gt;/g, '<mark>').replace(/&lt;\/mark&gt;/g, '</mark>')
 export default async function SearchPage({ searchParams }: { searchParams: SP }) {

@@ -55,6 +55,7 @@ export default async function Official({ params }: { params: Promise<{ slug: str
           {img && <img src={img} alt={o.photo?.alt ?? `Portrait of ${o.name}`} width={240} height={300} style={{ width: '100%', maxWidth: 280, height: 'auto', marginBottom: 16 }} />}
           <dl className="facts">
             <dt>{L.office}</dt><dd>{o.office}</dd>
+            {o.department && typeof o.department === 'object' && <><dt>Department</dt><dd><Link href={`/departments/${o.department.slug}`}>{o.department.name}</Link></dd></>}
             {o.ward && <><dt>{L.represents}</dt><dd>{o.ward === 'at-large' ? L.wholeCityAtLarge : <span className={`ward-chip ward-chip--${o.ward}`}>{wardName(L, o.ward)}</span>}</dd></>}
             {o.email && <><dt>{L.email}</dt><dd><a href={`mailto:${o.email}`}>{o.email}</a></dd></>}
             {o.phone && <><dt>{L.phone}</dt><dd><a href={telHref(o.phone)}>{o.phone}</a></dd></>}

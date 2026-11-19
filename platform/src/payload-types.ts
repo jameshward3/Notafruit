@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     services: Service;
+    'info-pages': InfoPage;
     notices: Notice;
     events: Event;
     'seasonal-features': SeasonalFeature;
@@ -84,6 +85,8 @@ export interface Config {
     places: Place;
     departments: Department;
     officials: Official;
+    bids: Bid;
+    'business-listings': BusinessListing;
     'service-requests': ServiceRequest;
     subscriptions: Subscription;
     outbox: Outbox;
@@ -101,6 +104,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     services: ServicesSelect<false> | ServicesSelect<true>;
+    'info-pages': InfoPagesSelect<false> | InfoPagesSelect<true>;
     notices: NoticesSelect<false> | NoticesSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'seasonal-features': SeasonalFeaturesSelect<false> | SeasonalFeaturesSelect<true>;
@@ -117,6 +121,8 @@ export interface Config {
     places: PlacesSelect<false> | PlacesSelect<true>;
     departments: DepartmentsSelect<false> | DepartmentsSelect<true>;
     officials: OfficialsSelect<false> | OfficialsSelect<true>;
+    bids: BidsSelect<false> | BidsSelect<true>;
+    'business-listings': BusinessListingsSelect<false> | BusinessListingsSelect<true>;
     'service-requests': ServiceRequestsSelect<false> | ServiceRequestsSelect<true>;
     subscriptions: SubscriptionsSelect<false> | SubscriptionsSelect<true>;
     outbox: OutboxSelect<false> | OutboxSelect<true>;
@@ -219,6 +225,10 @@ export interface Service {
    */
   externalUrl?: string | null;
   externalSystemName?: string | null;
+  /**
+   * Full page carried over from orangenj.gov, shown below the summary.
+   */
+  infoPage?: (number | null) | InfoPage;
   department?: (number | null) | Department;
   /**
    * Where these facts came from (lineage).
@@ -247,6 +257,288 @@ export interface Service {
   verificationStatus: 'unverified' | 'verified' | 'needs_review' | 'demo';
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "info-pages".
+ */
+export interface InfoPage {
+  id: number;
+  title: string;
+  /**
+   * URL name. Lowercase words separated by hyphens. Generated from the title if left empty.
+   */
+  slug: string;
+  section: 'residents' | 'business' | 'uez' | 'how-do-i' | 'government' | 'departments';
+  parent?: (number | null) | InfoPage;
+  sortOrder?: number | null;
+  summary?: string | null;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Forms and documents as published on the official site. Files on orangenj.gov open in the in-site viewer.
+   */
+  attachments?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Payment portals and other systems run by vendors. They refuse to be embedded, so residents get a clear hand-off.
+   */
+  externalLinks?:
+    | {
+        label: string;
+        url: string;
+        provider?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * People listed in the page's "Contact Us" box.
+   */
+  contacts?: (number | Official)[] | null;
+  /**
+   * Original page on orangenj.gov.
+   */
+  officialUrl?: string | null;
+  department?: (number | null) | Department;
+  /**
+   * Where these facts came from (lineage).
+   */
+  sources?: (number | SourceRecord)[] | null;
+  /**
+   * Draft → In review → Approved → Scheduled/Published → Archived. Approval and publication are separate steps.
+   */
+  workflowStatus: 'draft' | 'in_review' | 'approved' | 'scheduled' | 'published' | 'archived';
+  /**
+   * For "scheduled": the worker publishes at this time (America/New_York shown).
+   */
+  publishAt?: string | null;
+  /**
+   * Optional. The worker archives the item after this time; public pages hide it immediately.
+   */
+  expiresAt?: string | null;
+  /**
+   * Bypass review (authorized staff only; always audited).
+   */
+  emergencyPublish?: boolean | null;
+  publishedAt?: string | null;
+  /**
+   * Factual verification is separate from publication. "Demo" content is always labeled on public pages.
+   */
+  verificationStatus: 'unverified' | 'verified' | 'needs_review' | 'demo';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "officials".
+ */
+export interface Official {
+  id: number;
+  name: string;
+  /**
+   * URL name. Lowercase words separated by hyphens. Generated from the name if left empty.
+   */
+  slug: string;
+  /**
+   * e.g. "Councilmember", "City Clerk", "Mayor"
+   */
+  office: string;
+  category: 'executive' | 'council' | 'clerk' | 'department' | 'staff';
+  /**
+   * Lower numbers are listed first.
+   */
+  sortOrder?: number | null;
+  /**
+   * Only set when verified from an official roster.
+   */
+  ward?: ('north' | 'south' | 'east' | 'west' | 'at-large') | null;
+  /**
+   * Official portrait. Shown only when the asset is approved.
+   */
+  photo?: (number | null) | Media;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  /**
+   * Short biography as published by the City.
+   */
+  bio?: string | null;
+  department?: (number | null) | Department;
+  termStart?: string | null;
+  termEnd?: string | null;
+  /**
+   * Term as published, when exact dates are not known (e.g. "Term ends June 30, 2028").
+   */
+  termNote?: string | null;
+  /**
+   * Official profile page.
+   */
+  contactUrl?: string | null;
+  /**
+   * Factual verification is separate from publication. "Demo" content is always labeled on public pages.
+   */
+  verificationStatus: 'unverified' | 'verified' | 'needs_review' | 'demo';
+  /**
+   * Where these facts came from (lineage).
+   */
+  sources?: (number | SourceRecord)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Asset manifest (style guide §2). Approval (may it be used?) and verification (are its facts — location, rights — confirmed?) are separate.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  kind: 'photo' | 'seal' | 'illustration' | 'document';
+  /**
+   * Purely decorative (conveys no information). Decorative images use empty alt text.
+   */
+  decorative?: boolean | null;
+  /**
+   * Describe what the image shows for people who cannot see it. Not "image of…". Leave empty only for decorative images.
+   */
+  alt?: string | null;
+  /**
+   * When the photo was taken, if known.
+   */
+  captureDate?: string | null;
+  credit?: string | null;
+  rightsHolder: string;
+  /**
+   * e.g. "City-owned", "CC BY 4.0", "Licensed from …"
+   */
+  license: string;
+  sourceUrl?: string | null;
+  /**
+   * Where in Orange the photo was taken.
+   */
+  location?: string | null;
+  locationVerified?: boolean | null;
+  /**
+   * AI-generated or illustrative. Never use to depict a real Orange location.
+   */
+  isGenerated?: boolean | null;
+  approvalStatus: 'pending' | 'approved' | 'rejected';
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
+  /**
+   * SHA-256 of the uploaded original.
+   */
+  checksumSha256?: string | null;
+  /**
+   * Factual verification is separate from publication. "Demo" content is always labeled on public pages.
+   */
+  verificationStatus: 'unverified' | 'verified' | 'needs_review' | 'demo';
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    cardAvif?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    heroAvif?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name: string;
+  /**
+   * See docs/permission-matrix.md. Only administrators can change roles.
+   */
+  roles: ('contributor' | 'department_reviewer' | 'publisher' | 'records_clerk' | 'data_manager' | 'administrator')[];
+  /**
+   * Contributors and reviewers can only work on content for these departments.
+   */
+  departments?: (number | Department)[] | null;
+  /**
+   * May publish emergency notices without review. Every use is audited.
+   */
+  canEmergencyPublish?: boolean | null;
+  /**
+   * Linked identity from the staff sign-in provider.
+   */
+  identityProviderSubject?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -453,143 +745,6 @@ export interface SeasonalFeature {
   verificationStatus: 'unverified' | 'verified' | 'needs_review' | 'demo';
   updatedAt: string;
   createdAt: string;
-}
-/**
- * Asset manifest (style guide §2). Approval (may it be used?) and verification (are its facts — location, rights — confirmed?) are separate.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  kind: 'photo' | 'seal' | 'illustration' | 'document';
-  /**
-   * Purely decorative (conveys no information). Decorative images use empty alt text.
-   */
-  decorative?: boolean | null;
-  /**
-   * Describe what the image shows for people who cannot see it. Not "image of…". Leave empty only for decorative images.
-   */
-  alt?: string | null;
-  /**
-   * When the photo was taken, if known.
-   */
-  captureDate?: string | null;
-  credit?: string | null;
-  rightsHolder: string;
-  /**
-   * e.g. "City-owned", "CC BY 4.0", "Licensed from …"
-   */
-  license: string;
-  sourceUrl?: string | null;
-  /**
-   * Where in Orange the photo was taken.
-   */
-  location?: string | null;
-  locationVerified?: boolean | null;
-  /**
-   * AI-generated or illustrative. Never use to depict a real Orange location.
-   */
-  isGenerated?: boolean | null;
-  approvalStatus: 'pending' | 'approved' | 'rejected';
-  approvedBy?: (number | null) | User;
-  approvedAt?: string | null;
-  /**
-   * SHA-256 of the uploaded original.
-   */
-  checksumSha256?: string | null;
-  /**
-   * Factual verification is separate from publication. "Demo" content is always labeled on public pages.
-   */
-  verificationStatus: 'unverified' | 'verified' | 'needs_review' | 'demo';
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    card?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    cardAvif?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    hero?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    heroAvif?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  name: string;
-  /**
-   * See docs/permission-matrix.md. Only administrators can change roles.
-   */
-  roles: ('contributor' | 'department_reviewer' | 'publisher' | 'records_clerk' | 'data_manager' | 'administrator')[];
-  /**
-   * Contributors and reviewers can only work on content for these departments.
-   */
-  departments?: (number | Department)[] | null;
-  /**
-   * May publish emergency notices without review. Every use is audited.
-   */
-  canEmergencyPublish?: boolean | null;
-  /**
-   * Linked identity from the staff sign-in provider.
-   */
-  identityProviderSubject?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -916,63 +1071,6 @@ export interface Vote {
    * Factual verification is separate from publication. "Demo" content is always labeled on public pages.
    */
   verificationStatus: 'unverified' | 'verified' | 'needs_review' | 'demo';
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "officials".
- */
-export interface Official {
-  id: number;
-  name: string;
-  /**
-   * URL name. Lowercase words separated by hyphens. Generated from the name if left empty.
-   */
-  slug: string;
-  /**
-   * e.g. "Councilmember", "City Clerk", "Mayor"
-   */
-  office: string;
-  category: 'executive' | 'council' | 'clerk' | 'department';
-  /**
-   * Lower numbers are listed first.
-   */
-  sortOrder?: number | null;
-  /**
-   * Only set when verified from an official roster.
-   */
-  ward?: ('north' | 'south' | 'east' | 'west' | 'at-large') | null;
-  /**
-   * Official portrait. Shown only when the asset is approved.
-   */
-  photo?: (number | null) | Media;
-  email?: string | null;
-  phone?: string | null;
-  address?: string | null;
-  /**
-   * Short biography as published by the City.
-   */
-  bio?: string | null;
-  department?: (number | null) | Department;
-  termStart?: string | null;
-  termEnd?: string | null;
-  /**
-   * Term as published, when exact dates are not known (e.g. "Term ends June 30, 2028").
-   */
-  termNote?: string | null;
-  /**
-   * Official profile page.
-   */
-  contactUrl?: string | null;
-  /**
-   * Factual verification is separate from publication. "Demo" content is always labeled on public pages.
-   */
-  verificationStatus: 'unverified' | 'verified' | 'needs_review' | 'demo';
-  /**
-   * Where these facts came from (lineage).
-   */
-  sources?: (number | SourceRecord)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1373,6 +1471,112 @@ export interface Place {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bids".
+ */
+export interface Bid {
+  id: number;
+  title: string;
+  /**
+   * URL name. Lowercase words separated by hyphens. Generated from the title if left empty.
+   */
+  slug: string;
+  bidNumber?: string | null;
+  /**
+   * e.g. "Bids and Request for Proposals (RFPs)"
+   */
+  category?: string | null;
+  bidStatus: 'open' | 'closed' | 'awarded' | 'cancelled';
+  publishedOn?: string | null;
+  closesAt?: string | null;
+  /**
+   * Closing as published when not a date (e.g. "Upon Contract").
+   */
+  closesNote?: string | null;
+  summary?: string | null;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  contact?: string | null;
+  /**
+   * Forms and documents as published on the official site. Files on orangenj.gov open in the in-site viewer.
+   */
+  attachments?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  officialUrl?: string | null;
+  department?: (number | null) | Department;
+  /**
+   * Where these facts came from (lineage).
+   */
+  sources?: (number | SourceRecord)[] | null;
+  /**
+   * Draft → In review → Approved → Scheduled/Published → Archived. Approval and publication are separate steps.
+   */
+  workflowStatus: 'draft' | 'in_review' | 'approved' | 'scheduled' | 'published' | 'archived';
+  /**
+   * For "scheduled": the worker publishes at this time (America/New_York shown).
+   */
+  publishAt?: string | null;
+  /**
+   * Optional. The worker archives the item after this time; public pages hide it immediately.
+   */
+  expiresAt?: string | null;
+  /**
+   * Bypass review (authorized staff only; always audited).
+   */
+  emergencyPublish?: boolean | null;
+  publishedAt?: string | null;
+  /**
+   * Factual verification is separate from publication. "Demo" content is always labeled on public pages.
+   */
+  verificationStatus: 'unverified' | 'verified' | 'needs_review' | 'demo';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "business-listings".
+ */
+export interface BusinessListing {
+  id: number;
+  name: string;
+  /**
+   * Name + address, used to keep imports idempotent.
+   */
+  key: string;
+  address?: string | null;
+  phone?: string | null;
+  website?: string | null;
+  category?: string | null;
+  /**
+   * Factual verification is separate from publication. "Demo" content is always labeled on public pages.
+   */
+  verificationStatus: 'unverified' | 'verified' | 'needs_review' | 'demo';
+  /**
+   * Where these facts came from (lineage).
+   */
+  sources?: (number | SourceRecord)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "service-requests".
  */
 export interface ServiceRequest {
@@ -1616,6 +1820,10 @@ export interface PayloadLockedDocument {
         value: number | Service;
       } | null)
     | ({
+        relationTo: 'info-pages';
+        value: number | InfoPage;
+      } | null)
+    | ({
         relationTo: 'notices';
         value: number | Notice;
       } | null)
@@ -1678,6 +1886,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'officials';
         value: number | Official;
+      } | null)
+    | ({
+        relationTo: 'bids';
+        value: number | Bid;
+      } | null)
+    | ({
+        relationTo: 'business-listings';
+        value: number | BusinessListing;
       } | null)
     | ({
         relationTo: 'service-requests';
@@ -1766,6 +1982,47 @@ export interface ServicesSelect<T extends boolean = true> {
   shortcut?: T;
   externalUrl?: T;
   externalSystemName?: T;
+  infoPage?: T;
+  department?: T;
+  sources?: T;
+  workflowStatus?: T;
+  publishAt?: T;
+  expiresAt?: T;
+  emergencyPublish?: T;
+  publishedAt?: T;
+  verificationStatus?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "info-pages_select".
+ */
+export interface InfoPagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  section?: T;
+  parent?: T;
+  sortOrder?: T;
+  summary?: T;
+  body?: T;
+  attachments?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  externalLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        provider?: T;
+        id?: T;
+      };
+  contacts?: T;
+  officialUrl?: T;
   department?: T;
   sources?: T;
   workflowStatus?: T;
@@ -2322,6 +2579,57 @@ export interface OfficialsSelect<T extends boolean = true> {
   termEnd?: T;
   termNote?: T;
   contactUrl?: T;
+  verificationStatus?: T;
+  sources?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bids_select".
+ */
+export interface BidsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  bidNumber?: T;
+  category?: T;
+  bidStatus?: T;
+  publishedOn?: T;
+  closesAt?: T;
+  closesNote?: T;
+  summary?: T;
+  body?: T;
+  contact?: T;
+  attachments?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  officialUrl?: T;
+  department?: T;
+  sources?: T;
+  workflowStatus?: T;
+  publishAt?: T;
+  expiresAt?: T;
+  emergencyPublish?: T;
+  publishedAt?: T;
+  verificationStatus?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "business-listings_select".
+ */
+export interface BusinessListingsSelect<T extends boolean = true> {
+  name?: T;
+  key?: T;
+  address?: T;
+  phone?: T;
+  website?: T;
+  category?: T;
   verificationStatus?: T;
   sources?: T;
   updatedAt?: T;

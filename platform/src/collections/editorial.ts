@@ -44,7 +44,7 @@ export const Officials: CollectionConfig = {
     { name: 'office', type: 'text', required: true, admin: { description: 'e.g. "Councilmember", "City Clerk", "Mayor"' } },
     { name: 'category', type: 'select', required: true, defaultValue: 'council', index: true, options: [
       { label: 'Mayor & executive', value: 'executive' }, { label: 'City Council', value: 'council' },
-      { label: 'City Clerk & council staff', value: 'clerk' }, { label: 'Department head / staff', value: 'department' },
+      { label: 'City Clerk & council staff', value: 'clerk' }, { label: 'Department head', value: 'department' }, { label: 'Department staff', value: 'staff' },
     ] },
     { name: 'sortOrder', type: 'number', defaultValue: 100, admin: { position: 'sidebar', description: 'Lower numbers are listed first.' } },
     { name: 'ward', type: 'select', options: ['north', 'south', 'east', 'west', 'at-large'].map((v) => ({ label: v, value: v })), admin: { description: 'Only set when verified from an official roster.' } },
@@ -74,6 +74,7 @@ export const Services = withWorkflow('editorial', {
     { name: 'shortcut', type: 'checkbox', defaultValue: false, admin: { description: 'Show in the homepage task strip.' } },
     { name: 'externalUrl', type: 'text', admin: { description: 'Verified external system (payments, permits). Residents see a clear hand-off notice.' } },
     { name: 'externalSystemName', type: 'text' },
+    { name: 'infoPage', type: 'relationship', relationTo: 'info-pages', admin: { description: 'Full page carried over from orangenj.gov, shown below the summary.' } },
     departmentField, sourceField,
   ],
 }, {
@@ -153,3 +154,78 @@ export const ProjectUpdates = withWorkflow('editorial', {
     return notifySubscribers(req, { topicType: 'project', topicId: pid, key: `project-update:${d.id}:${d.publishedAt}`, subject: `Project update: ${d.title}`, text: `${d.body}\n\n${process.env.PUBLIC_SITE_URL ?? ''}/projects` })
   },
 })
+
+/** Files and outside systems referenced by imported City pages. Files on orangenj.gov open in the in-site viewer. */
+const attachmentsField: Field = {
+  name: 'attachments', type: 'array', labels: { singular: 'File', plural: 'Files' },
+  admin: { description: 'Forms and documents as published on the official site. Files on orangenj.gov open in the in-site viewer.' },
+  fields: [{ name: 'label', type: 'text', required: true }, { name: 'url', type: 'text', required: true }],
+}
+const externalLinksField: Field = {
+  name: 'externalLinks', type: 'array', labels: { singular: 'Outside system', plural: 'Outside systems' },
+  admin: { description: 'Payment portals and other systems run by vendors. They refuse to be embedded, so residents get a clear hand-off.' },
+  fields: [{ name: 'label', type: 'text', required: true }, { name: 'url', type: 'text', required: true }, { name: 'provider', type: 'text' }],
+}
+
+export const INFO_SECTIONS = ['residents', 'business', 'uez', 'how-do-i', 'government', 'departments'] as const
+
+/** Pages carried over from orangenj.gov (one per original page), shown at /info/<slug>. */
+export const InfoPages = withWorkflow('editorial', {
+  slug: 'info-pages',
+  admin: { group: 'Content', useAsTitle: 'title', defaultColumns: ['title', 'section', 'department', 'workflowStatus'] },
+  fields: [
+    { name: 'title', type: 'text', required: true, localized: true },
+    slugField(),
+    { name: 'section', type: 'select', required: true, index: true, options: INFO_SECTIONS.map((v) => ({ label: v, value: v })) },
+    { name: 'parent', type: 'relationship', relationTo: 'info-pages', admin: { position: 'sidebar' } },
+    { name: 'sortOrder', type: 'number', defaultValue: 100, admin: { position: 'sidebar' } },
+    { name: 'summary', type: 'textarea', localized: true },
+    { name: 'body', type: 'richText', localized: true },
+    attachmentsField, externalLinksField,
+    { name: 'contacts', type: 'relationship', relationTo: 'officials', hasMany: true, admin: { description: 'People listed in the page\'s "Contact Us" box.' } },
+    { name: 'officialUrl', type: 'text', admin: { description: 'Original page on orangenj.gov.' } },
+    departmentField, sourceField,
+  ],
+}, {
+  search: (d) => ({ title: d.title, body: `${d.summary ?? ''} ${lexicalToText(d.body)} ${(d.attachments ?? []).map((a: any) => a.label).join(' ')}`, url: `/info/${d.slug}`, contentType: 'page', department: d.department ? String(typeof d.department === 'object' ? d.department.id : d.department) : null }),
+})
+
+/** Bid and RFP/RFQ postings (orangenj.gov Bids.aspx). */
+export const Bids = withWorkflow('editorial', {
+  slug: 'bids',
+  admin: { group: 'Business', useAsTitle: 'title', defaultColumns: ['title', 'category', 'bidStatus', 'closesAt', 'workflowStatus'] },
+  fields: [
+    { name: 'title', type: 'text', required: true },
+    slugField(),
+    { name: 'bidNumber', type: 'text' },
+    { name: 'category', type: 'text', admin: { description: 'e.g. "Bids and Request for Proposals (RFPs)"' } },
+    { name: 'bidStatus', type: 'select', required: true, defaultValue: 'open', index: true, options: ['open', 'closed', 'awarded', 'cancelled'].map((v) => ({ label: v, value: v })) },
+    { name: 'publishedOn', type: 'date' },
+    { name: 'closesAt', type: 'date', admin: { date: { pickerAppearance: 'dayAndTime' } } },
+    { name: 'closesNote', type: 'text', admin: { description: 'Closing as published when not a date (e.g. "Upon Contract").' } },
+    { name: 'summary', type: 'textarea' },
+    { name: 'body', type: 'richText' },
+    { name: 'contact', type: 'textarea' },
+    attachmentsField,
+    { name: 'officialUrl', type: 'text' },
+    departmentField, sourceField,
+  ],
+}, {
+  search: (d) => ({ title: d.title, body: `${d.bidNumber ?? ''} ${d.summary ?? ''} ${lexicalToText(d.body)}`, url: `/business/bids/${d.slug}`, contentType: 'bid' }),
+})
+
+/** Local business directory (orangenj.gov Resource Directory). */
+export const BusinessListings: CollectionConfig = {
+  slug: 'business-listings',
+  admin: { group: 'Business', useAsTitle: 'name', defaultColumns: ['name', 'address', 'phone'] },
+  access: reference,
+  fields: [
+    { name: 'name', type: 'text', required: true },
+    { name: 'key', type: 'text', required: true, unique: true, admin: { readOnly: true, description: 'Name + address, used to keep imports idempotent.' } },
+    { name: 'address', type: 'text' },
+    { name: 'phone', type: 'text' },
+    { name: 'website', type: 'text' },
+    { name: 'category', type: 'text' },
+    verificationField, sourceField,
+  ],
+}

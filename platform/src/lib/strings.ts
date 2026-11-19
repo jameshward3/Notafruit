@@ -19,7 +19,7 @@ export const fmt = (s: string, vars: Record<string, string | number>) => s.repla
 const en = {
   // chrome
   skip: 'Skip to main content', services: 'Services', explore: 'Explore Orange', government: 'Government', meetings: 'Meetings',
-  transparency: 'Transparency', projects: 'Projects', accessibility: 'Accessibility', search: 'Search', menu: 'Menu',
+  transparency: 'Transparency', projects: 'Projects', business: 'Business', cityPages: 'City information', staffDirectory: 'Staff directory', accessibility: 'Accessibility', search: 'Search', menu: 'Menu',
   language: 'Language', chooseLanguage: 'Choose a language',
   notTranslated: 'This page is not yet available in English.',
   translationDraft: '',
@@ -33,7 +33,7 @@ const en = {
   searchPlaceholder: 'Search the City', searchSiteLabel: 'Search the City website', searchSubmit: 'Search',
   suggestions: 'Suggestions', suggestionsCount: '{n} suggestions available. Use the up and down arrows to choose.',
   type_official: 'Official', type_department: 'Department', type_legislation: 'Legislation', type_meeting: 'Meeting', type_notice: 'Notice',
-  type_service: 'Service', type_project: 'Project', type_place: 'Place', type_dataset: 'Data', type_event: 'Event',
+  type_service: 'Service', type_page: 'City page', type_bid: 'Bid', type_project: 'Project', type_place: 'Place', type_dataset: 'Data', type_event: 'Event',
   searchTitle: 'Search the City', resultsFor: 'Results for “{q}”', keywords: 'Keywords or record number', filterType: 'Type', all: 'All',
   filterWard: 'Ward', onOrAfter: 'On or after', resultsCount: '{n} results.', resultsOne: '1 result.', noResults: 'No results.',
   noResultsHint: 'Try fewer words, a record number like “Ordinance 40-2026”, or browse', moreResults: 'More results',
@@ -119,7 +119,7 @@ export type Strings = { [K in keyof typeof en]: string }
 
 const es: Strings = {
   skip: 'Saltar al contenido principal', services: 'Servicios', explore: 'Conozca Orange', government: 'Gobierno', meetings: 'Reuniones',
-  transparency: 'Transparencia', projects: 'Proyectos', accessibility: 'Accesibilidad', search: 'Buscar', menu: 'Menú',
+  transparency: 'Transparencia', projects: 'Proyectos', business: 'Negocios', cityPages: 'Información de la Ciudad', staffDirectory: 'Directorio de personal', accessibility: 'Accesibilidad', search: 'Buscar', menu: 'Menú',
   language: 'Idioma', chooseLanguage: 'Elija un idioma',
   notTranslated: 'Esta página todavía no está disponible en español. Se muestra la versión en inglés.',
   translationDraft: 'Traducción preliminar de la interfaz, pendiente de revisión por un traductor calificado.',
@@ -132,7 +132,7 @@ const es: Strings = {
   searchPlaceholder: 'Buscar en la Ciudad', searchSiteLabel: 'Buscar en el sitio web de la Ciudad', searchSubmit: 'Buscar',
   suggestions: 'Sugerencias', suggestionsCount: '{n} sugerencias disponibles. Use las flechas arriba y abajo para elegir.',
   type_official: 'Funcionario', type_department: 'Departamento', type_legislation: 'Legislación', type_meeting: 'Reunión', type_notice: 'Aviso',
-  type_service: 'Servicio', type_project: 'Proyecto', type_place: 'Lugar', type_dataset: 'Datos', type_event: 'Evento',
+  type_service: 'Servicio', type_page: 'Página de la Ciudad', type_bid: 'Licitación', type_project: 'Proyecto', type_place: 'Lugar', type_dataset: 'Datos', type_event: 'Evento',
   searchTitle: 'Buscar en la Ciudad', resultsFor: 'Resultados para “{q}”', keywords: 'Palabras clave o número de registro', filterType: 'Tipo', all: 'Todos',
   filterWard: 'Distrito', onOrAfter: 'Desde', resultsCount: '{n} resultados.', resultsOne: '1 resultado.', noResults: 'No hay resultados.',
   noResultsHint: 'Pruebe con menos palabras, un número de registro como “Ordinance 40-2026”, o vea', moreResults: 'Más resultados',
@@ -212,7 +212,7 @@ const es: Strings = {
 
 const ht: Strings = {
   skip: 'Ale dirèkteman nan kontni prensipal la', services: 'Sèvis', explore: 'Dekouvri Orange', government: 'Gouvènman', meetings: 'Reyinyon',
-  transparency: 'Transparans', projects: 'Pwojè', accessibility: 'Aksè', search: 'Chèche', menu: 'Meni',
+  transparency: 'Transparans', projects: 'Pwojè', business: 'Biznis', cityPages: 'Enfòmasyon Vil la', staffDirectory: 'Anyè anplwaye yo', accessibility: 'Aksè', search: 'Chèche', menu: 'Meni',
   language: 'Lang', chooseLanguage: 'Chwazi yon lang',
   notTranslated: 'Paj sa a poko disponib an kreyòl. N ap montre vèsyon angle a.',
   translationDraft: 'Premye tradiksyon entèfas la, k ap tann revizyon yon tradiktè kalifye.',
@@ -225,7 +225,7 @@ const ht: Strings = {
   searchPlaceholder: 'Chèche nan Vil la', searchSiteLabel: 'Chèche sou sit entènèt Vil la', searchSubmit: 'Chèche',
   suggestions: 'Sijesyon', suggestionsCount: '{n} sijesyon disponib. Sèvi ak flèch anwo ak anba pou chwazi.',
   type_official: 'Ofisyèl', type_department: 'Depatman', type_legislation: 'Lejislasyon', type_meeting: 'Reyinyon', type_notice: 'Avi',
-  type_service: 'Sèvis', type_project: 'Pwojè', type_place: 'Kote', type_dataset: 'Done', type_event: 'Evènman',
+  type_service: 'Sèvis', type_page: 'Paj Vil la', type_bid: 'Ofri', type_project: 'Pwojè', type_place: 'Kote', type_dataset: 'Done', type_event: 'Evènman',
   searchTitle: 'Chèche nan Vil la', resultsFor: 'Rezilta pou “{q}”', keywords: 'Mo kle oswa nimewo dosye', filterType: 'Kalite', all: 'Tout',
   filterWard: 'Ward', onOrAfter: 'Apati', resultsCount: '{n} rezilta.', resultsOne: '1 rezilta.', noResults: 'Pa gen rezilta.',
   noResultsHint: 'Eseye ak mwens mo, yon nimewo dosye tankou “Ordinance 40-2026”, oswa gade', moreResults: 'Plis rezilta',

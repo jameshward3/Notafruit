@@ -411,3 +411,41 @@ dl.facts dt { font-weight: 700; } dl.facts dd { margin: 0; }
 .gate__form label { font-weight: 700; }
 .gate__form input { min-height: var(--control-h); padding: 0 var(--s3); border: 1px solid var(--control-border); font: inherit; font-size: 1.125rem; }
 .gate__form .btn { width: 100%; }
+
+/* City content carried over from orangenj.gov */
+.viewer__actions { display: flex; flex-wrap: wrap; gap: var(--s3); margin-bottom: var(--s4); }
+.viewer__frame { display: block; width: 100%; height: min(80vh, 1100px); border: 1px solid var(--divider); background: var(--surface-cool); }
+.viewer__image { display: block; max-width: 100%; height: auto; border: 1px solid var(--divider); }
+.handoff-grid { list-style: none; padding: 0; display: grid; gap: var(--s3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
+.handoff a { display: flex; flex-direction: column; gap: 4px; height: 100%; padding: var(--s4); border: 1px solid var(--divider); border-left: 4px solid var(--gold); background: var(--white); text-decoration: none; color: var(--navy); }
+.handoff a:hover { background: var(--surface-cool); }
+.handoff__label { font-weight: 700; }
+.handoff__provider { font-size: var(--fs-meta); color: var(--text-muted); display: inline-flex; gap: 4px; align-items: center; }
+.contact-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s4); }
+.contact-list li { display: grid; grid-template-columns: 56px 1fr; gap: var(--s3); align-items: start; overflow-wrap: anywhere; font-size: var(--fs-ui); }
+.contact-list img, .contact-list__ph { width: 56px; height: 70px; object-fit: cover; object-position: top; background: var(--white); }
+.contact-list__ph { display: grid; place-items: center; font-weight: 700; color: var(--navy); border: 1px solid var(--divider); }
+.subpages { list-style: none; padding: 0; display: grid; gap: var(--s3); }
+.subpages li { border-left: 3px solid var(--divider); padding-left: 12px; }
+.subpages a { font-weight: 600; }
+.subpages .meta { margin: 4px 0 0; }
+.sitemap { padding-left: 1.1em; }
+.sitemap li { margin: 4px 0; }
+.sitemap ul { padding-left: 1.1em; }
+.tiles { list-style: none; padding: 0; }
+.tile h2 { font-size: var(--fs-h3); margin: 8px 0; }
+.tile svg { color: var(--navy); }
+.bidlist, .biz-list, .staff-list { list-style: none; padding: 0; display: grid; gap: var(--s3); }
+.bidlist li, .staff-list li { border-left: 3px solid var(--gold); padding-left: 12px; }
+.biz-list { grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+.biz-list li { border: 1px solid var(--divider); padding: var(--s3) var(--s4); background: var(--white); overflow-wrap: anywhere; }
+.biz-list svg { vertical-align: -2px; }
+.badge { display: inline-block; padding: 2px 8px; font-size: var(--fs-meta); font-weight: 700; text-transform: capitalize; border: 1px solid var(--divider); background: var(--surface-cool); }
+.badge--open { background: #E6F2EA; border-color: #2E7D4F; color: #1E5A38; }
+.badge--cancelled { background: #FBEAEA; border-color: #A33; color: #7A1F1F; }
+.inline-search { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: end; margin-bottom: var(--s3); }
+.inline-search label { flex-basis: 100%; font-weight: 700; }
+.inline-search input { flex: 1 1 240px; min-height: var(--control-h); padding: 0 var(--s3); font: inherit; border: 1px solid var(--control-border); }
+.letters { display: flex; flex-wrap: wrap; gap: 4px; margin: var(--s4) 0; }
+.letters a { min-width: 40px; min-height: 40px; display: inline-grid; place-items: center; padding: 0 8px; border: 1px solid var(--control-border); font-weight: 700; text-decoration: none; }
+.letters--wide a { min-width: 0; }

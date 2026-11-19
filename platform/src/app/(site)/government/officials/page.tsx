@@ -24,6 +24,7 @@ export default async function Officials() {
             {L.importedBody} {L.contact}: <a href={`tel:${CITY_HALL.phoneTel}`}>{CITY_HALL.phone}</a>.
           </Notice>
         )}
+        <p style={{ marginTop: 16 }}><Link className="btn btn--secondary" href="/government/directory">{L.staffDirectory}</Link></p>
         <nav aria-label={L.onThisPage} className="tabs" style={{ marginTop: 16 }}>
           {CATEGORY_ORDER.filter((c) => people.some((p) => p.category === c.key)).map((c) => <a key={c.key} href={`#${c.key}`}>{(L as any)[`cat_${c.key}`]}</a>)}
         </nav>

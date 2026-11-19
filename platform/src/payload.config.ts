@@ -7,7 +7,7 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
 import { BudgetDatasets, BudgetLines, ImportBatches, Places, Projects, Wards } from './collections/data'
-import { Departments, Events, Notices, Officials, ProjectUpdates, SeasonalFeatures, Services } from './collections/editorial'
+import { Bids, BusinessListings, Departments, Events, InfoPages, Notices, Officials, ProjectUpdates, SeasonalFeatures, Services } from './collections/editorial'
 import { Legislation, Meetings, Votes } from './collections/records'
 import { AuditEvents, LinkChecks, Media, Outbox, Redirects, ServiceRequests, SourceRecords, Subscriptions, Users } from './collections/system'
 import { tasks } from './jobs/tasks'
@@ -31,7 +31,7 @@ export default buildConfig({
   },
   collections: [
     // Content
-    Services, Notices, Events, SeasonalFeatures, Media,
+    Services, InfoPages, Notices, Events, SeasonalFeatures, Media,
     // Council & records
     Meetings, Legislation, Votes,
     // Projects & data
@@ -40,6 +40,8 @@ export default buildConfig({
     Wards, Places,
     // Directory
     Departments, Officials,
+    // Business
+    Bids, BusinessListings,
     // Residents & notifications
     ServiceRequests, Subscriptions, Outbox,
     // Provenance & admin
