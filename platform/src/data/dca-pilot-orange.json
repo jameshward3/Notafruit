@@ -1,0 +1,431 @@
+{
+ "source": {
+  "title": "PILOT Database and Viewer — NJ Department of Community Affairs, Division of Local Government Services",
+  "url": "https://www.nj.gov/dca/dlgs/misc_docs/PILOT%20Database%20and%20Viewer.xlsx",
+  "page": "https://www.nj.gov/dca/dlgs/resources/",
+  "sha256": "82911045a208ac27b499457954db525d0089aa65fa9d87ce83177b4f82a33122",
+  "retrieved": "2026-11-19",
+  "note": "PILOT agreements as reported by municipalities in their User Friendly Budgets (latest submission year shown per project). \"If billed at the normal rate\" = assessed value × the municipality's 2025 total tax rate."
+ },
+ "town": {
+  "code": "0717",
+  "name": "City of Orange township",
+  "county": "Essex",
+  "region": "North",
+  "type": "Urban Suburb",
+  "rate": 4.0290843390694855,
+  "totalAV": 2958837500,
+  "munShare": 0.7574646555305102,
+  "budget": 95591567,
+  "neighbors": [
+   "0719",
+   "0705",
+   "0722",
+   "0708",
+   "0713"
+  ],
+  "count": 27,
+  "billing": 2560817,
+  "av": 280680400,
+  "taxes": 11308850.039237589,
+  "gap": 8748033.039237589,
+  "subsidy": 6626325.8326356225,
+  "avShare": 0.09486171511615626,
+  "subsidyShareOfBudget": 0.06931914645395051
+ },
+ "projects": [
+  {
+   "code": "0717",
+   "project": "Our Lady of Mt Carmel",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 191090,
+   "av": 12960000,
+   "ufbYear": 2025,
+   "taxesAtRate": 522169.3303434053
+  },
+  {
+   "code": "0717",
+   "project": "Milennium Homes",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 0,
+   "av": 5720000,
+   "ufbYear": 2025,
+   "taxesAtRate": 230463.62419477457
+  },
+  {
+   "code": "0717",
+   "project": "South Essex Urban Renewal",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 94230,
+   "av": 19476000,
+   "ufbYear": 2025,
+   "taxesAtRate": 784704.465877173
+  },
+  {
+   "code": "0717",
+   "project": "Salem Towers",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 183821,
+   "av": 14125000,
+   "ufbYear": 2025,
+   "taxesAtRate": 569108.1628935648
+  },
+  {
+   "code": "0717",
+   "project": "Orange Park Apartments",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 200013,
+   "av": 13320000,
+   "ufbYear": 2025,
+   "taxesAtRate": 536674.0339640555
+  },
+  {
+   "code": "0717",
+   "project": "Oakwood Towers",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 254233,
+   "av": 26070000,
+   "ufbYear": 2025,
+   "taxesAtRate": 1050382.2871954148
+  },
+  {
+   "code": "0717",
+   "project": "Transport of NJ",
+   "type": "Other",
+   "start": null,
+   "end": null,
+   "billing": 107019,
+   "av": 0,
+   "ufbYear": 2025,
+   "taxesAtRate": 0
+  },
+  {
+   "code": "0717",
+   "project": "The Berkeley",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 44379,
+   "av": 5100000,
+   "ufbYear": 2025,
+   "taxesAtRate": 205483.30129254377
+  },
+  {
+   "code": "0717",
+   "project": "Project Live",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 0,
+   "av": 242300,
+   "ufbYear": 2025,
+   "taxesAtRate": 9762.471353565363
+  },
+  {
+   "code": "0717",
+   "project": "New Community Corp",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 52521,
+   "av": 10000000,
+   "ufbYear": 2025,
+   "taxesAtRate": 402908.43390694854
+  },
+  {
+   "code": "0717",
+   "project": "307 Washington Street",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 0,
+   "av": 6630000,
+   "ufbYear": 2025,
+   "taxesAtRate": 267128.2916803069
+  },
+  {
+   "code": "0717",
+   "project": "Grand Central Orange Village",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 38496,
+   "av": 10500000,
+   "ufbYear": 2025,
+   "taxesAtRate": 423053.85560229595
+  },
+  {
+   "code": "0717",
+   "project": "Central Orange Village II",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 0,
+   "av": 5529900,
+   "ufbYear": 2025,
+   "taxesAtRate": 222804.33486620348
+  },
+  {
+   "code": "0717",
+   "project": "Washington Dodd",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 443756,
+   "av": 30000000,
+   "ufbYear": 2025,
+   "taxesAtRate": 1208725.3017208457
+  },
+  {
+   "code": "0717",
+   "project": "Walter G Alexander Phase I",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 63222,
+   "av": 6900000,
+   "ufbYear": 2025,
+   "taxesAtRate": 278006.8193957945
+  },
+  {
+   "code": "0717",
+   "project": "Walter G Alexander Phase II",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 36992,
+   "av": 3600000,
+   "ufbYear": 2025,
+   "taxesAtRate": 145047.03620650148
+  },
+  {
+   "code": "0717",
+   "project": "Walter G Alexander Phase III",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 33655,
+   "av": 6300000,
+   "ufbYear": 2025,
+   "taxesAtRate": 253832.31336137757
+  },
+  {
+   "code": "0717",
+   "project": "L&M Development",
+   "type": "Other",
+   "start": null,
+   "end": null,
+   "billing": 66687,
+   "av": 11927400,
+   "ufbYear": 2025,
+   "taxesAtRate": 480565.0054581738
+  },
+  {
+   "code": "0717",
+   "project": "Tony Galento Plaza",
+   "type": "Other",
+   "start": null,
+   "end": null,
+   "billing": 21284,
+   "av": 23640000,
+   "ufbYear": 2025,
+   "taxesAtRate": 952475.5377560264
+  },
+  {
+   "code": "0717",
+   "project": "Living Fountain",
+   "type": "Other",
+   "start": null,
+   "end": null,
+   "billing": 65740,
+   "av": 4000000,
+   "ufbYear": 2025,
+   "taxesAtRate": 161163.37356277942
+  },
+  {
+   "code": "0717",
+   "project": "Condos @ 475 S. Jefferson",
+   "type": "Other",
+   "start": null,
+   "end": null,
+   "billing": 104778,
+   "av": 9132300,
+   "ufbYear": 2025,
+   "taxesAtRate": 367948.0690968426
+  },
+  {
+   "code": "0717",
+   "project": "Condos @ 52 Lincoln Ave.",
+   "type": "Other",
+   "start": null,
+   "end": null,
+   "billing": 197742,
+   "av": 4774500,
+   "ufbYear": 2025,
+   "taxesAtRate": 192368.63176887258
+  },
+  {
+   "code": "0717",
+   "project": "Harvard Printing Development",
+   "type": "Affordable housing",
+   "start": null,
+   "end": null,
+   "billing": 65356,
+   "av": 13171000,
+   "ufbYear": 2025,
+   "taxesAtRate": 530670.698298842
+  },
+  {
+   "code": "0717",
+   "project": "Peek Reock I",
+   "type": "Other",
+   "start": null,
+   "end": null,
+   "billing": 44851,
+   "av": 9800000,
+   "ufbYear": 2025,
+   "taxesAtRate": 394850.26522880956
+  },
+  {
+   "code": "0717",
+   "project": "205 Mt. Vernon",
+   "type": "Other",
+   "start": null,
+   "end": null,
+   "billing": 54092,
+   "av": 2090000,
+   "ufbYear": 2025,
+   "taxesAtRate": 84207.86268655225
+  },
+  {
+   "code": "0717",
+   "project": "606 Freeman Street",
+   "type": "Other",
+   "start": null,
+   "end": null,
+   "billing": 127500,
+   "av": 12360000,
+   "ufbYear": 2025,
+   "taxesAtRate": 497994.8243089884
+  },
+  {
+   "code": "0717",
+   "project": "Essex & Crane",
+   "type": "Other",
+   "start": null,
+   "end": null,
+   "billing": 69360,
+   "av": 13312000,
+   "ufbYear": 2025,
+   "taxesAtRate": 536351.7072169299
+  }
+ ],
+ "neighbors": [
+  {
+   "code": "0719",
+   "name": "South Orange Village township",
+   "count": 17,
+   "billing": 3840418.8699999996,
+   "av": 354382900,
+   "taxes": 9155766.641606966,
+   "gap": 5315347.771606967,
+   "subsidy": 1508410.1671682436,
+   "avShare": 0.06245013352355932,
+   "subsidyShareOfBudget": 0.03237615461776723
+  },
+  {
+   "code": "0705",
+   "name": "East Orange city",
+   "count": 45,
+   "billing": 5112139.85,
+   "av": 20335518.090000007,
+   "taxes": 659043.9502774711,
+   "gap": -4453095.899722529,
+   "subsidy": -2744526.7395134205,
+   "avShare": 0.0029301661896335486,
+   "subsidyShareOfBudget": -0.016019214598766904
+  },
+  {
+   "code": "0722",
+   "name": "West Orange township",
+   "count": 7,
+   "billing": 2210763.12,
+   "av": 102100500,
+   "taxes": 2681166.0753035895,
+   "gap": 470402.95530358935,
+   "subsidy": 125028.00267436515,
+   "avShare": 0.009160576025834711,
+   "subsidyShareOfBudget": 0.0012237409587336023
+  },
+  {
+   "code": "0708",
+   "name": "Glen Ridge borough",
+   "count": 1,
+   "billing": 733613.23,
+   "av": 28126400,
+   "taxes": 986555.8640445359,
+   "gap": 252942.63404453592,
+   "subsidy": 59311.16264453056,
+   "avShare": 0.014877119784870366,
+   "subsidyShareOfBudget": 0.003371370519118155
+  },
+  {
+   "code": "0713",
+   "name": "Montclair township",
+   "count": 13,
+   "billing": 4842057.6899999995,
+   "av": 223048100,
+   "taxes": 7841502.437497502,
+   "gap": 2999444.7474975027,
+   "subsidy": 786415.6204533335,
+   "avShare": 0.027714288536592958,
+   "subsidyShareOfBudget": 0.00815925030154389
+  }
+ ],
+ "averages": {
+  "neighbors": {
+   "towns": 5,
+   "count": 16.6,
+   "billing": 3347798.552,
+   "av": 145598683.618,
+   "taxes": 4264806.993746013,
+   "subsidy": -53072.35731458953
+  },
+  "county": {
+   "towns": 18,
+   "count": 56.27777777777778,
+   "billing": 3822268.559444451,
+   "av": 156238573.22722223,
+   "taxes": 5032650.824923986,
+   "subsidy": 356643.35657987196
+  },
+  "type": {
+   "towns": 78,
+   "count": 9.5,
+   "billing": 3139006.465769231,
+   "av": 236969990.355,
+   "taxes": 6000234.956737093,
+   "subsidy": 1110769.9023452918
+  },
+  "state": {
+   "towns": 302,
+   "count": 9.427152317880795,
+   "billing": 1877736.818228426,
+   "av": 140767871.81043044,
+   "taxes": 3802735.153613348,
+   "subsidy": 674594.243131596
+  }
+ }
+}

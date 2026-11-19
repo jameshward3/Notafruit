@@ -4,6 +4,7 @@ import { Notice, PageBand } from '@/components/ui'
 import { TaxImpact } from '@/components/TaxImpact'
 import { budgetRows, change, groupBy, isPilot, isPilotSettlement, total, type BudgetRow } from '@/lib/budgetDashboard'
 import { CAPITAL_PROJECTS, CHANGE_ORDERS, COMPILED_SOURCE, HISTORY, SIX_YEAR_PLAN, TAX } from '@/lib/budgetCompiled'
+import { DCA, matchDca } from '@/lib/dcaPilot'
 import { docHref } from '@/lib/docs'
 import { getClient } from '@/lib/payload'
 
@@ -53,6 +54,10 @@ export default async function BudgetDashboard({ searchParams }: { searchParams: 
   const misc = cfRev.filter((r) => /^Section [A-G]/.test(r.section))
   const pilots = cfRev.filter(isPilot)
   const settlements = cfRev.filter(isPilotSettlement)
+  // Each budget PILOT line matched to its NJ DCA PILOT Database project (assessed value, taxes at the normal rate).
+  const pilotRows = [...pilots].sort((a, b) => (b.fy ?? 0) - (a.fy ?? 0)).map((p) => ({ p, d: matchDca(p.item) }))
+  const matched = new Set(pilotRows.map((r) => r.d?.project))
+  const dcaOnly = DCA.projects.filter((d) => !matched.has(d.project))
 
   return (
     <>
@@ -112,7 +117,19 @@ export default async function BudgetDashboard({ searchParams }: { searchParams: 
           </>}
 
           {tab === 'pilot' && <>
-            <div className="grid grid-3" style={{ margin: '16px 0 24px' }}>
+            <section className="panel panel--warm" aria-labelledby="pilot-normal" style={{ marginTop: 16 }}>
+              <h2 id="pilot-normal" style={{ marginTop: 0 }}>What PILOT properties would pay if taxed at the normal rate</h2>
+              <div className="grid grid-3" style={{ margin: '12px 0' }}>
+                <Stat label="Taxes at the 2025 rate" value={$(DCA.town.taxes)} note={`${$(DCA.town.av)} assessed value × ${DCA.town.rate?.toFixed(3)} per $100`} />
+                <Stat label="PILOT payments billed" value={$(DCA.town.billing)} note={`${DCA.town.count} agreements, as reported for 2025`} />
+                <Stat label="Difference" value={$(DCA.town.gap)} note="All taxing bodies: City, Essex County, schools and library" />
+                <Stat label="City's share of the difference" value={$(DCA.town.subsidy)} note={`DCA "municipal subsidy" (City's ${(((DCA.town.munShare ?? 0)) * 100).toFixed(1)}% share of the levy) · ${((DCA.town.subsidyShareOfBudget ?? 0) * 100).toFixed(1)}% of the 2025 budget`} />
+                <Stat label="PILOT share of the tax base" value={`${((DCA.town.avShare ?? 0) * 100).toFixed(1)}%`} note={`of ${$(DCA.town.totalAV)} total assessed value`} />
+                <Stat label="Paid vs. normal taxes" value={`${(((DCA.town.billing ?? 0) / (DCA.town.taxes || 1)) * 100).toFixed(0)}%`} note="PILOT payments as a share of the conventional tax bill" />
+              </div>
+              <p className="meta" style={{ margin: 0 }}>Source: NJ Department of Community Affairs, Division of Local Government Services, <a href={DCA.source.url} rel="noopener">PILOT Database and Viewer</a> (from municipal User Friendly Budgets; Orange&apos;s latest submission 2025). Normal rate = Orange&apos;s 2025 total property-tax rate. <Link href="/transparency/budget/pilot-database">Explore the full statewide database</Link>.</p>
+            </section>
+            <div className="grid grid-3" style={{ margin: '24px 0' }}>
               <Stat label="PILOT revenue 2026" value={$(total(pilots, 'fy'))} note={<Delta fy={total(pilots, 'fy')} prior={total(pilots, 'prior')} />} />
               <Stat label="Agreements paying in 2026" value={String(pilots.filter((p) => p.fy).length)} note={`${pilots.filter((p) => !p.fy && p.prior).length} anticipated in 2025 but not in 2026`} />
               <Stat label="Share of 2026 revenues" value={`${((total(pilots, 'fy') / total(cfRev, 'fy')) * 100).toFixed(1)}%`} note={`Realized in 2025: ${$(total(pilots, 'paid'))}`} />
@@ -120,10 +137,29 @@ export default async function BudgetDashboard({ searchParams }: { searchParams: 
             <p>Payments in lieu of taxes (PILOTs) are negotiated payments from property owners, usually redevelopment or senior housing projects, in place of conventional property taxes. {settlements.length > 0 && <> The 2026 budget also anticipates one-time PILOT settlement revenue: {settlements.map((x) => <span key={x.key}>{x.item} {$(x.fy)}</span>)}, not included in the totals below.</>}</p>
             <div className="table-wrap" tabIndex={0} role="region" aria-label="PILOT agreements (scrolls sideways on small screens)"><table>
               <caption>PILOT agreements in the 2026 budget</caption>
-              <thead><tr><th scope="col">Property / agreement</th><th scope="col" className="num">2026 anticipated</th><th scope="col" className="num">2025 anticipated</th><th scope="col" className="num">2025 realized</th><th scope="col">Change</th></tr></thead>
-              <tbody>{[...pilots].sort((a, b) => (b.fy ?? 0) - (a.fy ?? 0)).map((p) => <tr key={p.key}><th scope="row">{p.item.replace(/\s*\(PILOT\)\s*/i, '')}</th><td className="num">{$(p.fy)}</td><td className="num">{$(p.prior)}</td><td className="num">{$(p.paid)}</td><td><Delta fy={p.fy} prior={p.prior} /></td></tr>)}</tbody>
-              <tfoot><tr><th scope="row">Total</th><td className="num"><strong>{$(total(pilots, 'fy'))}</strong></td><td className="num">{$(total(pilots, 'prior'))}</td><td className="num">{$(total(pilots, 'paid'))}</td><td><Delta fy={total(pilots, 'fy')} prior={total(pilots, 'prior')} /></td></tr></tfoot>
+              <thead><tr><th scope="col">Property / agreement</th><th scope="col" className="num">2026 anticipated</th><th scope="col" className="num">2025 anticipated</th><th scope="col" className="num">2025 realized</th><th scope="col">Change</th><th scope="col" className="num">Assessed value (DCA)</th><th scope="col" className="num">If taxed at 2025 rate</th><th scope="col" className="num">2026 PILOT vs. normal tax</th></tr></thead>
+              <tbody>{pilotRows.map(({ p, d }) => <tr key={p.key}><th scope="row">{p.item.replace(/\s*\(PILOT\)\s*/i, '')}{d && d.project.toLowerCase() !== p.item.replace(/\s*\(PILOT\)\s*/i, '').toLowerCase() && <div className="meta">DCA: {d.project}</div>}</th>
+                <td className="num">{$(p.fy)}</td><td className="num">{$(p.prior)}</td><td className="num">{$(p.paid)}</td><td><Delta fy={p.fy} prior={p.prior} /></td>
+                <td className="num">{d?.av ? $(d.av) : d ? 'Not reported' : 'Not in DCA data'}</td><td className="num">{d?.av ? $(d.taxesAtRate) : '—'}</td>
+                <td className="num">{d?.taxesAtRate && p.fy ? `${((p.fy / d.taxesAtRate) * 100).toFixed(0)}%` : '—'}</td></tr>)}</tbody>
+              <tfoot><tr><th scope="row">Total</th><td className="num"><strong>{$(total(pilots, 'fy'))}</strong></td><td className="num">{$(total(pilots, 'prior'))}</td><td className="num">{$(total(pilots, 'paid'))}</td><td><Delta fy={total(pilots, 'fy')} prior={total(pilots, 'prior')} /></td>
+                <td className="num">{$(pilotRows.reduce((a, r) => a + (r.d?.av ?? 0), 0))}</td><td className="num"><strong>{$(pilotRows.reduce((a, r) => a + (r.d?.taxesAtRate ?? 0), 0))}</strong></td>
+                <td className="num">{(() => { const n = pilotRows.reduce((a, r) => a + (r.d?.taxesAtRate ? r.p.fy ?? 0 : 0), 0), t = pilotRows.reduce((a, r) => a + (r.d?.taxesAtRate ? r.d.taxesAtRate : 0), 0); return t ? `${((n / t) * 100).toFixed(0)}%` : '—' })()}</td></tr></tfoot>
             </table></div>
+            {dcaOnly.length > 0 && <p className="meta">Also listed in the DCA database with no line in the 2026 budget: {dcaOnly.map((d) => `${d.project} (assessed ${$(d.av)}, ${$(d.taxesAtRate)} at the 2025 rate, PILOT billing ${$(d.billing)})`).join('; ')}.</p>}
+            <section style={{ marginTop: 32 }} aria-labelledby="pilot-compare"><h2 id="pilot-compare">How Orange compares</h2>
+              <div className="table-wrap" tabIndex={0} role="region" aria-label="PILOT comparison (scrolls sideways on small screens)"><table>
+                <caption>PILOTs in Orange and comparable municipalities (DCA PILOT Database; averages over towns with PILOTs)</caption>
+                <thead><tr><th scope="col">Municipality / group</th><th scope="col" className="num">PILOTs</th><th scope="col" className="num">PILOT billing</th><th scope="col" className="num">Taxes at 2025 rate</th><th scope="col" className="num">Municipal subsidy</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row"><strong>City of Orange Township</strong></th><td className="num">{DCA.town.count}</td><td className="num">{$(DCA.town.billing)}</td><td className="num">{$(DCA.town.taxes)}</td><td className="num"><strong>{$(DCA.town.subsidy)}</strong></td></tr>
+                  {DCA.neighbors.map((n) => <tr key={n.code}><th scope="row">{n.name}</th><td className="num">{n.count}</td><td className="num">{$(n.billing)}</td><td className="num">{$(n.taxes)}</td><td className="num">{$(n.subsidy)}</td></tr>)}
+                  {([['Neighboring towns (average)', DCA.averages.neighbors], ['Essex County (average)', DCA.averages.county], [`${DCA.town.type} communities (average)`, DCA.averages.type], ['New Jersey (average)', DCA.averages.state]] as const).map(([label, a]) => (
+                    <tr key={label}><th scope="row">{label}</th><td className="num">{a.count?.toFixed(1)}</td><td className="num">{$(a.billing)}</td><td className="num">{$(a.taxes)}</td><td className="num">{$(a.subsidy)}</td></tr>))}
+                </tbody></table></div>
+              <p className="meta">Where a municipality did not report assessed values for its PILOT properties, its &ldquo;taxes at the 2025 rate&rdquo; are understated and its subsidy can appear negative (for example East Orange).</p>
+              <p><Link className="btn btn--secondary" href="/transparency/budget/pilot-database">Open the interactive PILOT database (every New Jersey municipality)</Link></p>
+            </section>
           </>}
 
           {tab === 'grants' && <>
