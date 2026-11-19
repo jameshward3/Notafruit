@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { docHref } from '@/lib/docs'
 import { CivicMap, ProjectLegend } from '@/components/CivicMap'
 import { SubscribeForm } from '@/components/SubscribeForm'
 import { DemoFlag, PageBand, StatusBadge, WardChip, human } from '@/components/ui'
@@ -67,7 +68,7 @@ export default async function Project({ params }: { params: Promise<{ slug: stri
             <dt>Contact</dt><dd>{p.contact ?? 'City Hall'}</dd>
             <dt>Last updated</dt><dd>{fmtShortDate(p.updatedAt)}</dd>
           </dl>
-          {p.sources?.length > 0 && <><h2 style={{ fontSize: 'var(--fs-h3)' }}>Sources</h2><ul>{p.sources.map((s: any) => <li key={s.id}>{s.url ? <a href={s.url}>{s.title}</a> : s.title}</li>)}</ul></>}
+          {p.sources?.length > 0 && <><h2 style={{ fontSize: 'var(--fs-h3)' }}>Sources</h2><ul>{p.sources.map((s: any) => <li key={s.id}>{s.url ? <a href={docHref(s.url, s.title)}>{s.title}</a> : s.title}</li>)}</ul></>}
           <h2 style={{ fontSize: 'var(--fs-h3)' }}>Get updates</h2>
           <SubscribeForm topicType="project" topicId={String(p.id)} />
         </aside>

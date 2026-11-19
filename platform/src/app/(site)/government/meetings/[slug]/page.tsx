@@ -4,6 +4,7 @@ import { CalendarDays, ChevronDown, Clock, MapPin, Printer } from 'lucide-react'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { GovTabs } from '@/components/GovTabs'
 import { DocumentList } from '@/components/DocumentList'
+import { youtubeEmbed, youtubeId } from '@/lib/video'
 import { Breadcrumbs, DemoFlag, Notice, StatusBadge, human } from '@/components/ui'
 import { one, type SP } from '@/lib/params'
 import { findOnePublic, findPublic } from '@/lib/public'
@@ -21,6 +22,8 @@ export default async function Meeting({ params, searchParams }: { params: Promis
   const tab = (['agenda', 'minutes', 'video'] as const).find((t) => t === tabParam) ?? 'agenda'
   const m = await findOnePublic('meetings', { slug: { equals: slug } }, { depth: 1 })
   if (!m) notFound()
+  // City YouTube videos (Orange Tv) attached by scripts/crawl/youtube.ts, embedded on the Video tab.
+  const videos: { id: string; label: string }[] = (m.documents ?? []).map((d: any) => ({ id: youtubeId(d.url), label: d.label as string })).filter((v: any) => !!v.id)
   const votes = (await findPublic('votes', { where: { meeting: { equals: m.id } }, limit: 100, depth: 1 })).docs as any[]
   const recent = (await findPublic('legislation', { sort: '-updatedAt', limit: 3 })).docs as any[]
   const demo = m.verificationStatus === 'demo'
@@ -39,6 +42,7 @@ export default async function Meeting({ params, searchParams }: { params: Promis
           </p>
           {m.verificationStatus === 'unverified' && <Notice tone="info" title={L.importedMeetingTitle}>{L.importedMeetingBody}</Notice>}
           <p className="no-print"><a className="btn btn--secondary" href={`/government/meetings/${m.slug}/print`}><Printer size={18} aria-hidden="true" /> {L.printAgenda}</a></p>
+          {videos.length > 0 && tab !== 'video' && <p className="no-print"><Link className="btn" href="?tab=video">▶ Watch the meeting video</Link></p>}
           <nav className="tabs" aria-label={L.meetingRecords}>
             <Link href="?tab=agenda" aria-current={tab === 'agenda' ? 'page' : undefined}>{L.tabAgenda}</Link>
             <Link href="?tab=minutes" aria-current={tab === 'minutes' ? 'page' : undefined}>{L.tabMinutes}</Link>
@@ -77,12 +81,18 @@ export default async function Meeting({ params, searchParams }: { params: Promis
           </>}
           {tab === 'video' && <>
             <h2>{L.videoTranscript}</h2>
-            {m.videoUrl ? <p><a href={m.videoUrl}>Watch the meeting video</a> (captions provided by the video host where available).</p> : <p>No video has been published for this meeting.</p>}
+            {videos.map((v) => (
+              <figure key={v.id} className="video">
+                <div className="video__frame"><iframe src={youtubeEmbed(v.id)} title={v.label} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div>
+                <figcaption className="meta">{v.label.replace(/^Video: /, '')} · Orange Tv (City of Orange Township) on YouTube · <a href={`https://www.youtube.com/watch?v=${v.id}`} rel="noopener">Open on YouTube</a> (captions from YouTube where available)</figcaption>
+              </figure>
+            ))}
+            {m.videoUrl && !youtubeId(m.videoUrl) ? <p><a href={m.videoUrl}>Watch the meeting video</a> (captions provided by the video host where available).</p> : !videos.length && <p>No video has been published for this meeting.</p>}
             {(m.transcript ?? []).length > 0 ? <ol style={{ listStyle: 'none', padding: 0 }}>{m.transcript.map((t: any) => (
               <li key={t.id ?? t.seconds} style={{ padding: '8px 0', borderBottom: '1px solid var(--divider)' }}><span className="meta tabular">{ts(t.seconds)}</span> <strong>{t.speaker}</strong>: {t.text}</li>
             ))}</ol> : <p>No transcript is available.</p>}
           </>}
-          <DocumentList docs={(m.documents ?? []).filter((d: any) => tab === 'agenda' ? !['minutes', 'video'].includes(d.kind) : tab === 'minutes' ? d.kind === 'minutes' : d.kind === 'video')} title={tab === 'minutes' ? L.docsMinutes : tab === 'video' ? L.docsVideo : L.docsAgenda} s={L} locale={locale} />
+          <DocumentList docs={(m.documents ?? []).filter((d: any) => tab === 'agenda' ? !['minutes', 'video'].includes(d.kind) : tab === 'minutes' ? d.kind === 'minutes' : d.kind === 'video' && !youtubeId(d.url))} title={tab === 'minutes' ? L.docsMinutes : tab === 'video' ? L.docsVideo : L.docsAgenda} s={L} locale={locale} />
         </article>
         <aside className="panel">
           <h2 style={{ fontSize: 'var(--fs-h3)' }}>{L.legAtGlance}</h2>

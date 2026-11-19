@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { docHref } from '@/lib/docs'
 import { CivicMap } from '@/components/CivicMap'
 import { DemoFlag, Notice, PageBand, WardChip, human } from '@/components/ui'
 import { municipalGeoJSON, placesGeoJSON } from '@/lib/gis'
@@ -32,7 +33,7 @@ export default async function Place({ params }: { params: Promise<{ slug: string
             <dt>Address</dt><dd>{p.address ?? 'Not available'}</dd>
             <dt>Ward</dt><dd>{p.ward ? <WardChip ward={p.ward} /> : 'Not determined'}</dd>
           </dl>
-          {p.sources?.length > 0 && <><h2 style={{ fontSize: 'var(--fs-h3)' }}>Sources</h2><ul>{p.sources.map((s: any) => <li key={s.id}>{s.url ? <a href={s.url}>{s.title}</a> : s.title}</li>)}</ul></>}
+          {p.sources?.length > 0 && <><h2 style={{ fontSize: 'var(--fs-h3)' }}>Sources</h2><ul>{p.sources.map((s: any) => <li key={s.id}>{s.url ? <a href={docHref(s.url, s.title)}>{s.title}</a> : s.title}</li>)}</ul></>}
         </aside>
       </div>
     </>

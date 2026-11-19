@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ExternalLink, FileText, Mail, Phone } from 'lucide-react'
-import { docHref, orangenjDocId } from '@/lib/docs'
+import { docHref, viewable } from '@/lib/docs'
 import { photoUrl, telHref } from '@/lib/officials'
 
 type File = { id?: string; label: string; url: string }
@@ -14,7 +14,7 @@ export function FileList({ files, title = 'Forms & documents' }: { files?: File[
       <h2 style={{ fontSize: 'var(--fs-h3)' }}>{title}</h2>
       <ul className="doclist">
         {files.map((f, i) => {
-          const inSite = !!orangenjDocId(f.url)
+          const inSite = viewable(f.url)
           return (
             <li key={f.id ?? i}>
               {inSite

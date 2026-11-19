@@ -18,6 +18,8 @@ const csp = [
   "font-src 'self' data:",
   `connect-src 'self' https://tile.openstreetmap.org ${tileOrigin}${isProd ? '' : ' ws:'}`.trim(),
   "worker-src 'self' blob:",
+  // Own document viewer frames, and City Council meeting videos (YouTube privacy-enhanced mode).
+  "frame-src 'self' https://www.youtube-nocookie.com",
   "frame-ancestors 'none'", "object-src 'none'", "base-uri 'self'", "form-action 'self'",
 ].join('; ')
 const securityHeaders = [
@@ -40,6 +42,7 @@ const nextConfig: NextConfig = {
       { source: '/preview/:path*', headers: [{ key: 'Cache-Control', value: 'private, no-store' }, { key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
       { source: '/api/:path*', headers: [{ key: 'Cache-Control', value: 'private, no-store' }] },
       // Proxied City documents may be framed by this site's own viewer only (later entries override the defaults above).
+      { source: '/documents/file', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }, { key: 'Content-Security-Policy', value: "frame-ancestors 'self'" }] },
       { source: '/documents/orangenj/file/:id', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }, { key: 'Content-Security-Policy', value: "frame-ancestors 'self'" }] },
     ]
   },
